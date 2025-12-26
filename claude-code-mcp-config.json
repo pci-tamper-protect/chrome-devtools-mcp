@@ -1,7 +1,7 @@
 {
   "chrome-devtools": {
     "command": "python",
-    "args": ["/absolute/path/to/chrome-devtools-mcp/server.py"],
+    "args": ["/Users/kestenbroughton/projectos/chrome-devtools-mcp/server.py"],
     "env": {
       "CHROME_DEBUG_PORT": "9222"
     }
