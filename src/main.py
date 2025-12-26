@@ -74,6 +74,38 @@ def register_all_tools() -> None:
 cdp_client = ChromeDevToolsClient()
 register_all_tools()
 
+# Add intelligent log filtering (optional enhancement)
+try:
+    from llm_logpipe_core.integration_helpers import setup_chrome_devtools_integration
+
+    result = setup_chrome_devtools_integration(
+        mcp_server=mcp,
+        config={
+            "classifier_mode": "hybrid",  # Use hybrid mode for best results
+            "default_max_tokens": 2000,
+            "framework_detection": True,
+            "pattern_learning": True
+        }
+    )
+
+    if result["success"]:
+        logger.info(f"🧠 Intelligent log filtering enabled!")
+        logger.info(f"📊 Framework: {result.get('mcp_framework', 'Auto-detected')}")
+        logger.info(f"🔧 Enhanced tools: {len(result.get('enhanced_tools', []))}")
+
+        enhanced_tools = result.get('enhanced_tools', [])
+        if enhanced_tools:
+            logger.info(f"💡 Smart tools available: {', '.join(enhanced_tools[:3])}...")
+    else:
+        logger.warning(f"⚠️ Intelligent filtering setup failed: {result.get('message', 'Unknown error')}")
+
+except ImportError:
+    logger.info("💡 llm-logpipe-core not installed - using standard tools")
+    logger.info("   Install with: pip install llm-logpipe-core")
+except Exception as e:
+    logger.warning(f"⚠️ Intelligent filtering setup failed: {e}")
+    logger.info("   Falling back to standard tools")
+
 
 def main() -> None:
     """Main server entry point."""
